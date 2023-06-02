@@ -34,6 +34,7 @@ Screen {
 	property string fieldText4 : "API Key:"
 	property string fieldText5 : "URL like \"192.168.10.5\":"
 	property string fieldText6 : "IDX:"
+	property string fieldText7 : "Use SSL:"
 
 	property string pluginFile2: ""
 	property string fieldText21 : "Wachtwoord :"
@@ -42,6 +43,7 @@ Screen {
 	property string fieldText24 : "API Key:"
 	property string fieldText25 : "URL like \"192.168.10.5\":"
 	property string fieldText26 : "IDX:"
+	property string fieldText27 : "Use SSL:"
 	
 	property bool field1visible : false
 	property bool field2visible : false
@@ -49,6 +51,7 @@ Screen {
 	property bool field4visible : false
 	property bool field5visible : false
 	property bool field6visible : false
+	property bool field7visible : false
 	
 	
 	property bool field1visible2 : false
@@ -57,6 +60,7 @@ Screen {
 	property bool field4visible2 : false
 	property bool field5visible2 : false
 	property bool field6visible2 : false
+	property bool field7visible2 : false
 	
 	
 	property string tempPassWord : app.passWord
@@ -64,6 +68,7 @@ Screen {
 	property string tempSiteID: app.siteID
 	property string tempApiKey: app.apiKey
 	property string tempURL: app.urlString
+	property bool tempUseSSL: app.useSSL
 	property string tempIDX: app.idx
 	property string onlinePluginFileName : ""
 	
@@ -72,6 +77,7 @@ Screen {
 	property string tempSiteID2: app.siteID2
 	property string tempApiKey2: app.apiKey2
 	property string tempURL2: app.urlString2
+	property bool tempUseSSL2: app.useSSL2
 	property string tempIDX2: app.idx2
 	property string onlinePluginFileName2 : ""
 	
@@ -135,7 +141,6 @@ Screen {
 		sendMailText2 = "mail versturen"
 		getPasseText2 = "Eerst mail versturen"
 	
-
 		enableSleepToggle.isSwitchedOn = app.enableSleep
 		enablePollingToggle.isSwitchedOn = app.enablePolling
 		inputField1.inputText = tempPassWord
@@ -143,12 +148,14 @@ Screen {
 		inputField3.inputText = tempSiteID
 		inputField4.inputText = tempApiKey
 		inputField5.inputText = tempURL
+		useSSLToggle.isSwitchedOn = tempUseSSL
 		inputField6.inputText = tempApiKey
 		inputField21.inputText = tempPassWord2
 		inputField22.inputText = tempUserName2
 		inputField23.inputText = tempSiteID2
 		inputField24.inputText = tempApiKey2
 		inputField25.inputText = tempURL2
+		useSSLToggle2.isSwitchedOn = tempUseSSL2
 		inputField26.inputText = tempApiKey2
 		if (app.inverterCount >1){tempInverterCount = 2 ;inverterCountToggle.isSwitchedOn = true}else{tempInverterCount = 1;inverterCountToggle.isSwitchedOn = false}
 	}
@@ -241,11 +248,12 @@ Screen {
 			if (invertersNameArray[x2].toLowerCase()==selectedInverter.toLowerCase()){listview1.currentIndex = x2 }
 		}
 		field1visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('ass')>-1)
-		field2visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('use')>-1)
+		field2visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('user')>-1)
 		field3visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('iteid')>-1)
 		field4visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('api')>-1)
 		field5visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('url')>-1)
 		field6visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('idx')>-1)
+		field7visible = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('usessl')>-1)
 	}
 	
 	function setFieldText2() {
@@ -253,12 +261,12 @@ Screen {
 			if (invertersNameArray[x2].toLowerCase()==selectedInverter2.toLowerCase()){ listview1.currentIndex = x2}
 		}
 		field1visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('ass')>-1)
-		field2visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('use')>-1)
+		field2visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('user')>-1)
 		field3visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('iteid')>-1)
 		field4visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('api')>-1)
 		field5visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('url')>-1)
 		field6visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('idx')>-1)
-		field7visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('info')>-1)
+		field7visible2 = ((inputDataType[listview1.currentIndex]).toString().toLowerCase().indexOf('usessl')>-1)
 	}
 
 /////////////////////////////////////////////////////// SAVE DATA TO TEMPS WHEN SAVE IS CLICKED ON AN INPUTFIELD ///////////////////////////////////////////////
@@ -935,6 +943,26 @@ Screen {
 			id: inputField6 ; width: isNxt?  parent.width - mytext1.left - 40 : parent.width - mytext1.left - 32; height: isNxt? 35:28;	leftTextAvailableWidth: isNxt? 100:80; 
 			leftText: "";visible: (inputField6Text.visible);onClicked: {qkeyboard.open(fieldText6, inputField6.inputText, saveFieldData6)}
 		}
+		//usessl
+		Row {
+			id: toggleField7Row
+			spacing: 5
+			visible: field7visible
+			Text {id: inputField7Text;font.pixelSize: isNxt ? 18:14; font.family: qfont.semiBold.name ;text:fieldText7;visible: (toggleField7Row.visible)}
+			OnOffToggle {
+				id: useSSLToggle
+				visible: (toggleField7Row.visible)
+				height: 30
+				leftIsSwitchedOn: false
+				onSelectedChangedByUser: {
+					if (isSwitchedOn) {
+						tempUseSSL = true
+					} else {
+						tempUseSSL = false
+					}
+				}
+			}
+		}
 
 	}
 
@@ -1104,7 +1132,26 @@ Screen {
 			id: inputField26 ; width: isNxt?  parent.width - mytext12.left - 40 : parent.width - mytext12.left - 32; height: isNxt? 35:28;	leftTextAvailableWidth: isNxt? 100:80; 
 			leftText: "";visible: (inputField6Text2.visible);onClicked: {qkeyboard.open(fieldText26, inputField26.inputText, saveFieldData26)}
 		}
-		
+		//usessl
+		Row {
+			id: toggleField7Row2
+			spacing: 5
+			visible: field7visible2
+			Text {id: inputField7Text2;font.pixelSize: isNxt ? 18:14; font.family: qfont.semiBold.name ;text:fieldText7;visible: (toggleField7Row2.visible)}
+			OnOffToggle {
+				id: useSSLToggle2
+				visible: (toggleField7Row2.visible)
+				height: 30
+				leftIsSwitchedOn: false
+				onSelectedChangedByUser: {
+					if (isSwitchedOn) {
+						tempUseSSL2 = true
+					} else {
+						tempUseSSL2 = false
+					}
+				}
+			}
+		}
 	}
 
 	Grid {
@@ -1521,6 +1568,7 @@ Screen {
 				if(selectedInverter.toLowerCase() == "Enphase T"){tempApiKey = ""}
 				app.apiKey = tempApiKey
 				app.urlString = tempURL
+				app.useSSL = tempUseSSL
 				app.idx = tempApiKey
 				app.onlinePluginFileName = onlinePluginFileName
 				app.selectedInverter2 = selectedInverter2
@@ -1531,6 +1579,7 @@ Screen {
 				if(selectedInverter2.toLowerCase() == "Enphase T"){tempApiKey2 = ""}
 				app.apiKey2 = tempApiKey2
 				app.urlString2 = tempURL2
+				app.useSSL2 = tempUseSSL2
 				app.idx2 = tempApiKey2
 				app.onlinePluginFileName2 = onlinePluginFileName2
 				app.saveSettings()

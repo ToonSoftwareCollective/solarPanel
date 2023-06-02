@@ -65,7 +65,6 @@ App {
 	
 	property url    pluginUrl : "https://raw.githubusercontent.com/ToonSoftwareCollective/solarpanel-plugins/main/"
 	
-	
 	property string currentPowerProd : "0"
 	property string currentUsage : "0"
     property string dtime : "0"
@@ -118,14 +117,16 @@ App {
 	property string userName : ""
 	property string siteID : ""
 	property string apiKey : ""
-    property string urlString : ""
+	property string urlString : ""
 	property string idx : ""
+	property bool useSSL : true
 	property string passWord2 : ""
 	property string userName2 : ""
 	property string siteID2 : ""
 	property string apiKey2 : ""
-    property string urlString2 : ""
+	property string urlString2 : ""
 	property string idx2 : ""
+	property bool useSSL2 : true
 
 	property bool 	zonneplan : false
 	property bool 	zonneplan2 : false
@@ -152,6 +153,7 @@ App {
 			'apiKey' : "",
 			'siteID' : "",
 			'urlString' : "",
+			'useSSL' : true,
 			'idx' : "",
 			'selectedInverter2': "",
 			'passWord2' : "",
@@ -159,6 +161,7 @@ App {
 			'apiKey2' : "",
 			'siteID2' : "",
 			'urlString2' : "",
+			'useSSL2' : true,
 			'idx2' : "",
 			'enableSleep' : "",
 			'enablePolling' : "",
@@ -223,10 +226,10 @@ App {
 			inverter1CurrentPower = 0
 			inverter1Day = 0
 			inverter1Total = 0
-			Solar.getSolarData(passWord,userName,apiKey,siteID,urlString, parseInt(totalValue))
+			Solar.getSolarData(passWord,userName,apiKey,siteID,urlString,useSSL,parseInt(totalValue))
 		}
 		if (getDataCount == 1){
-			Solar2.getSolarData(passWord2,userName2,apiKey2,siteID2,urlString2, parseInt(totalValue))
+			Solar2.getSolarData(passWord2,userName2,apiKey2,siteID2,urlString2,useSSL2,parseInt(totalValue))
 		}
     }
 	

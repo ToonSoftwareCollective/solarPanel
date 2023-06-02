@@ -9,9 +9,10 @@ function getSettings(){
 		apiKey = solarpanelSettingsJson['apiKey']
 		siteID = solarpanelSettingsJson['siteID']
 		urlString = solarpanelSettingsJson['urlString']
+		if (solarpanelSettingsJson['useSSL'] == "No") {useSSL = false} else {useSSL = true}
 		if (solarpanelSettingsJson['enableSleep'] == "Yes") {enableSleep = true} else {enableSleep = false}
 		if (solarpanelSettingsJson['enablePolling'] == "No") {enablePolling = false} else {enablePolling = true}
-		//if (solarpanelSettingsJson['DebugOn'] == "Yes") {debugOutput = true} else {debugOutput = false}
+		if (solarpanelSettingsJson['DebugOn'] == "Yes") {debugOutput = true} else {debugOutput = false}
 	} catch(e) {
 	}
 	
@@ -34,6 +35,7 @@ function getSettings(){
 		siteID2 = solarpanelSettingsJson['siteID2']
 		urlString2 = solarpanelSettingsJson['urlString2']
 		idx2 = solarpanelSettingsJson['idx2']
+		if (solarpanelSettingsJson['useSSL2'] == "No") {useSSL2 = false} else {useSSL2 = true}
 		onlinePluginFileName2 = solarpanelSettingsJson['onlinePluginFileName2']
 		inverterCount = parseInt(solarpanelSettingsJson['inverterCount'])
 	} catch(e) {
@@ -67,11 +69,15 @@ function getSettings(){
 
 	if (debugOutput) console.log("*********SolarPanel Savedata Started" )
 	var tmpDebugOn = ""
-	if (debugOutput == true) {tmpDebugOn = "Yes";} else {tmpDebugOn = "No";	}
+	if (debugOutput == true) {tmpDebugOn = "Yes";} else {tmpDebugOn = "No";}
 	var tmpenableSleep = ""
-	if (enableSleep == true) {tmpenableSleep = "Yes";} else {tmpenableSleep = "No";	}
+	if (enableSleep == true) {tmpenableSleep = "Yes";} else {tmpenableSleep = "No";}
 	var tmpenablePolling = ""
-	if (enablePolling == true) {tmpenablePolling = "Yes";} else {tmpenablePolling = "No";	}
+	if (enablePolling == true) {tmpenablePolling = "Yes";} else {tmpenablePolling = "No";}
+	var tmpUseSSL = ""
+	if (useSSL == true) {tmpUseSSL = "Yes";} else {tmpUseSSL = "No";}
+	var tmpUseSSL2 = ""
+	if (useSSL2 == true) {tmpUseSSL2 = "Yes";} else {tmpUseSSL2 = "No";}
 	var setJson = {
 		"inverterCount" 	: inverterCount,
 		"selectedInverter-v2" 	: selectedInverter,
@@ -80,6 +86,7 @@ function getSettings(){
 		"apiKey" : apiKey,
 		"siteID" : siteID,
 		"urlString" : urlString,
+		"useSSL" : tmpUseSSL,
 		"idx" : idx,
 		"onlinePluginFileName" : onlinePluginFileName,
 		"selectedInverter2-v2" 	: selectedInverter2,
@@ -88,6 +95,7 @@ function getSettings(){
 		"apiKey2" : apiKey2,
 		"siteID2" : siteID2,
 		"urlString2" : urlString2,
+		"useSSL2" : tmpUseSSL2,
 		"idx2" : idx2,
 		"onlinePluginFileName2" : onlinePluginFileName2,
 		"enableSleep" : tmpenableSleep,

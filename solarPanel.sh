@@ -177,7 +177,7 @@
 			DATATXT=`grep -o '"total":[^}]*' /var/tmp/huaweistep2.txt | grep -o '[^"]*$'`
 			echo "$(date '+%d/%m/%Y %H:%M:%S') DATATXT found in 1st request: $DATATXT"
 
-		if [ "$DATATXT" == ":0" ]
+		if [ "$DATATXT" == ":0" -o "$DATATXT" == "" ]
 		then
 			echo "$(date '+%d/%m/%Y %H:%M:%S') try different server"
 			# 2ND REQUEST

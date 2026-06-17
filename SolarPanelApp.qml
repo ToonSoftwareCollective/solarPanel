@@ -95,6 +95,7 @@ App {
 	property bool 	enableSleep : false
 
 	property bool 	enablePolling : true
+	property bool 	showProduction : false
 	property string configMsgUuid : ""
 	property string popupString : "SolarPanel instellen en herstarten als nodig" + "..."
 	property string pluginWarning : "Selecteer Inverter"

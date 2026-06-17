@@ -60,6 +60,13 @@ function getSettings(){
 	}else{
 		enphase2=false
 	}
+
+	//must be a seperate try because this parameter was added later
+	try {
+		solarpanelSettingsJson = JSON.parse(solarpanelSettingsFile.read())
+		if (solarpanelSettingsJson['showProduction'] == "Yes") {showProduction = true} else {showProduction = false}
+	} catch(e) {
+	}
 }
 ///////////////////////////////////////// SAVE ALL TO SETTINGS ///////////////////////////////////////////////////////////////////////////////////////////////// 
 
@@ -92,7 +99,8 @@ function getSettings(){
 		"onlinePluginFileName2" : onlinePluginFileName2,
 		"enableSleep" : tmpenableSleep,
 		"enablePolling" : tmpenablePolling,
-		"DebugOn": tmpDebugOn
+		"DebugOn": tmpDebugOn,
+		"showProduction": (showProduction ? "Yes" : "No")
 	}
 	solarpanelSettingsFile.write(JSON.stringify(setJson))
 	solarpanelSettingsJson = JSON.parse(solarpanelSettingsFile.read())

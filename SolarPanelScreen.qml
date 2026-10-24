@@ -127,7 +127,7 @@ Screen {
 		isStacked : true
 		specialBarColor2 :"green"
 		specialBarIndex2  : 0
-		showSpecialBar2 : false
+		showSpecialBar2: app.showProduction
 		barColor2 : "green"
 		dataValues2: app.fiveminuteValuesProd
 		visible: (app.pluginWarning.length <1)
@@ -138,41 +138,29 @@ Screen {
 		sunsetPerc  : app.sunsetPerc
 	}
 	
-	Rectangle{
-		id: rect1
+	SolarPowerCheckbox {
+		id: productionCheckbox
 		anchors {
-            bottom: parent.bottom
-            bottomMargin: isNxt? 10:8
-            left : parent.left
-            leftMargin : isNxt? 100:80
-        }
-        height:  isNxt? 20: 16
-        width: isNxt?  40 : 32
-		color : "green"
-		visible: (app.pluginWarning.length <1)
-	}
-	
-	Text{
-		id: txt1
+			bottom: parent.bottom
+			bottomMargin: isNxt ? 10 : 8
+			left: parent.left
+			leftMargin: isNxt ? 10 : 8
+		}
 		text: "Teruglevering"
-		font.pixelSize: isNxt? 15:12
-		font.family: qfont.regular.name
-		anchors {
-            verticalCenter: rect1.verticalCenter
-            left : rect1.right
-            leftMargin : isNxt? 10:8
-        }
-		color : "black"
-		visible: (app.pluginWarning.length <1)
+		selected: app.showProduction
+		onSelectedChangedByUser: {
+			app.showProduction = selected
+			app.saveSettings()
+		}
+		visible: app.pluginWarning.length < 1
 	}
-	
-	
+
 	Rectangle{
 		id: rect2
 		anchors {
-            verticalCenter: rect1.verticalCenter
-            left :  txt1.right
-            leftMargin : 100
+            verticalCenter: productionCheckbox.verticalCenter
+            left: productionCheckbox.right
+            leftMargin: isNxt ? 20 : 16
         }
         height:  isNxt? 20: 16
         width: isNxt?  40 : 32
@@ -187,7 +175,7 @@ Screen {
 		font.pixelSize: isNxt? 15:12
 		font.family: qfont.regular.name
 		anchors {
-            verticalCenter: rect1.verticalCenter
+            verticalCenter: productionCheckbox.verticalCenter
             left : rect2.right
             leftMargin : isNxt? 10:8
         }

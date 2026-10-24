@@ -95,6 +95,7 @@ App {
 	property bool 	enableSleep : false
 
 	property bool 	enablePolling : true
+	property bool 	showProduction : false
 	property string configMsgUuid : ""
 	property string popupString : "SolarPanel instellen en herstarten als nodig" + "..."
 	property string pluginWarning : "Selecteer Inverter"
@@ -585,63 +586,82 @@ App {
 		}
 	}
 	
+    // Delay timers — one per independent call chain so they can overlap.
+    //
+    // Each timer stores its callback as a property instead of using
+    // Signal.connect(). The connect() approach accumulates connections on
+    // every call because Qt never removes a slot automatically; after N calls
+    // the signal fires N callbacks and N closures are kept alive forever.
+    // Storing the callback as a property and clearing it in onTriggered avoids
+    // both the accumulation and the dangling closure references.
+
     Timer {
         id: solarDelaytimer1
+        property var callback: null
+        onTriggered: { var fn = callback; callback = null; if (fn) fn() }
     }
-	
-	//delaytimer
+
     function solarDelay(delayTime, cb) {
-		solarDelaytimer1.interval = delayTime
-		solarDelaytimer1.repeat = false
-		solarDelaytimer1.triggered.connect(cb)
+        solarDelaytimer1.stop()       // cancel any pending fire before restarting
+        solarDelaytimer1.interval = delayTime
+        solarDelaytimer1.repeat = false
+        solarDelaytimer1.callback = cb
         solarDelaytimer1.start()
     }
 
 
 	Timer {
         id: zonneplanDelayTimer
+        property var callback: null
+        onTriggered: { var fn = callback; callback = null; if (fn) fn() }
     }
-	
-	//delaytimer
+
     function zonneplanDelay(delayTime, cb) {
-		zonneplanDelayTimer.interval = delayTime
-		zonneplanDelayTimer.repeat = false
-		zonneplanDelayTimer.triggered.connect(cb)
+        zonneplanDelayTimer.stop()
+        zonneplanDelayTimer.interval = delayTime
+        zonneplanDelayTimer.repeat = false
+        zonneplanDelayTimer.callback = cb
         zonneplanDelayTimer.start()
     }
-	
+
 	function zonneplanDelayStop() {
         zonneplanDelayTimer.stop()
+        zonneplanDelayTimer.callback = null
     }
 
 	Timer {
         id: zonneplanRegisterDelayTimer
+        property var callback: null
+        onTriggered: { var fn = callback; callback = null; if (fn) fn() }
     }
-	
-	//delaytimer
+
     function zonneplanRegisterDelay(delayTime, cb) {
-		zonneplanRegisterDelayTimer.interval = delayTime
-		zonneplanRegisterDelayTimer.repeat = false
-		zonneplanRegisterDelayTimer.triggered.connect(cb)
+        zonneplanRegisterDelayTimer.stop()
+        zonneplanRegisterDelayTimer.interval = delayTime
+        zonneplanRegisterDelayTimer.repeat = false
+        zonneplanRegisterDelayTimer.callback = cb
         zonneplanRegisterDelayTimer.start()
     }
-	
-	
+
+
 	Timer {
         id: solarEnphase
+        property var callback: null
+        onTriggered: { var fn = callback; callback = null; if (fn) fn() }
     }
-	
-	//delaytimer
+
     function solarEnphaseDelay(delayTime, cb) {
-		if (debugOutput) console.log("*********SolarPanel Starting timer solarEnphaseDelay")
-		solarEnphase.interval = delayTime
-		solarEnphase.repeat = false
-		solarEnphase.triggered.connect(cb)
+        if (debugOutput) console.log("*********SolarPanel Starting timer solarEnphaseDelay")
+        solarEnphase.stop()
+        solarEnphase.interval = delayTime
+        solarEnphase.repeat = false
+        solarEnphase.callback = cb
         solarEnphase.start()
     }
-	
+
 	function solarEnphaseDelayStop() {
-       solarEnphase.stop()
+        solarEnphase.stop()
+        solarEnphase.callback = null
     }
 	
 	
